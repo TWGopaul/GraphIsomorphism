@@ -1,0 +1,37 @@
+COSC 320 Project 3 
+Travis Gopaul, Mitchell Krystofiak
+
+Assignment:
+Submit a draft of your research paper/presentation. This should start to summarize the topic, what problem it solves, and where it finds practical application. Also prepare a preliminary list of references, along with a short (2-3 sentence) summary of how it will contribute to the content of your paper. 
+
+Introduction/Summary: 
+An isomorphism between two graphs, G and H, is a bijection between their respective vertex sets that preserves adjacency such that any two vertices u and v in G are adjacent in G if and only if f(u) and f(v) are adjacent in H. If an isomorphism exists, G and H are said to be isomorphic.  An isomorphism of G onto itself is called an automorphism. Currently, determining an isomorphism known as the Graph Isomorphism (GI) problem, is NP but it is unknown whether it is P or NP-complete. While determining if two graphs are isomorphic is beneficial, it is very inefficient when compared to determining if two graphs are not isomorphic, which can also be illuminating depending on the application. 
+
+Algorithms:
+The current algorithms we have deal with ruling out two graphs who are not isomorphic. We haven’t actually gotten the checking completely together yet, but we do check if the number of vertices and edges are the same. If they are not, we do not have an isomorphism. We also check the degree sequences of the two graphs, which are just sorted lists of the number of edges a vertex has. For instance, a graph G has degree sequence 1, 2, 2, 3, one vertex in the graph has one edge, 2 vertices have 2 edges, and 1 vertex has 3 edges. If these are not equal between two graphs, we do not have an isomorphism. Our future plans for determining an isomorphism after ruling out these base cases is to permute the graph and check whether or not the second graph in the relationship is a possible isomorphism. Just considering this, we can see that we run into a O(n!) time, which is not good. 
+ 
+Practical Applications: 
+The ability to determine if an isomorphism exists between graphs has important implications in various scientific fields due to the heavy use of graphs to represent data. In mathematical chemistry, this technique can be used to determine molecular symmetry between graphs of chemical compounds. Graph isomorphism can be used in circuit design in electronic design automation. Graph drawing and computer vision are also fields of research where isomorphism can be applied to compare image symmetry.
+ 
+Use of research sources: 
+Practical graph isomorphism, II
+Brendan D. McKay, Adolfo Piperno 
+https://www-sciencedirect-com.proxy-su.researchport.umd.edu/science/article/pii/S0747717113001193 
+Harm Derksen,
+The Graph Isomorphism Problem and approximate categories,
+Journal of Symbolic Computation,
+Volume 59,
+2013,
+Pages 81-112,
+ISSN 0747-7171,
+https://doi.org/10.1016/j.jsc.2013.06.002.
+(https://www.sciencedirect.com/science/article/pii/S074771711300093X)
+
+
+C. Boucher, D. Loker
+Graph Isomorphism Completeness for Perfect Graphs and Subclasses of Perfect Graphs
+May 2006
+https://cs.uwaterloo.ca/research/tr/2006/CS-2006-32.pdf
+
+How sources will contribute:
+The listed resources will contribute to the content of our paper by assisting in describing the GI problem and its complexity. They also outline well known approaches to how others have attempted to solve the problem. This will give us insight on how to approach and structure our code to handle the abstractions involved with graph isomorphisms.
