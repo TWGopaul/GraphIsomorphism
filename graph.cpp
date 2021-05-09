@@ -373,7 +373,7 @@ bool Graph<T>::is_iso(const Graph<T> & H)
 	{	
 		//permutate the first function and compare to the second
 		//using brute force
-		iso = permutate();
+//		iso = permutate();
 		if (iso == false)
 			std::cout << "The two graphs aren't isomorphic!" << std::endl;
 		else
@@ -431,15 +431,57 @@ bool Graph<T>::degreeSeq(std::vector<int> a, std::vector<int> b)
 	return true;
 }
 
+template<class T>
 int Graph<T>::factorial(int n)
 {
 	if (n == 0 || n == 1)
 		return 1;
 	else
-		return n * fact(n-1);
+		return n * factorial(n-1);
 }
 
-bool Graph<T>::is_permutation( )
+
+template<class T>
+bool Graph<T>::permutation(std::vector<int>a, std::vector<int>b, const Graph<T> &H)
 {
+	//compare if deg seg of G.vertex[i] == deg seq of H.vertex[i]
+	//	check if the adjacency list of G.vertex[i] is_perutation of adj list of H.vertex[j]
+	//	if not, 
+	//		move onto next vertex in H w/ matching deg seq
+	//		if none exists, there isn't an isomorphism 
 
+	int count = 0;	//count how many times a permutation is found
+	std::vector<int>found;	//vector to store found permutations in H, so they are not searched again
+
+	for(int i = 0; i < a.size(); i++)	//iterate through a's deg seq vector; sizes should be the same already
+	{
+		bool perm = false;
+		
+		//while a permuation of G.vertices[i] has not been found
+		while(!(perm))
+		for(int j = 0; j < b.size(); j++) //iterate through b's deg seq vector
+		{
+			//if deg seq matches && a perm at H.vertices[j] doesnt alrady exist
+			if((a[i] == b[j]) && (found[j] == 0))
+			{
+				std::vector<int>tempG = vertices.find(i)->second;	//iterator at pos G[i]
+				std::vector<int>tempH= H.vertices.find(j)->second;	//iterator at pos H[j]
+				//check if H's adj list at j is permutation of adj list of G at i
+				perm = is_permutation(tempG.begin(), tempG.end(),
+					tempH.begin());
+				if(perm)
+				{
+					count++;
+					//push H.vertices[j] onto a vector so that we don't look at again,
+					found.push_back(j);	
+				}
+			}
+						
+		}
+	}	
+
+	return ((count == a.size())&&(count  == found.size())) ?  true: false;
 }
+
+
+

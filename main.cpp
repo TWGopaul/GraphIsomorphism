@@ -17,9 +17,13 @@ int main()
 {
 	Graph<int> G(UNDIRECTED);
 	Graph<char> K(UNDIRECTED);
+
+	//Graph H for testing permutations	
+	Graph<int> H(UNDIRECTED);
 	for (int i = 1; i <= 8; i++)
 	{
 		G.addVertex(i);
+		H.addVertex(i);
 	}
 	
 	/*
@@ -50,6 +54,10 @@ int main()
 	K.print();
 	cout << "Vertex count: " << K.getVertexCount() << endl;
 	cout << endl;
+	cout << "Graph H: " << endl;
+	H.print();
+	cout << "Vertex count: " << H.getVertexCount() << endl;
+	cout << endl;
 
 	G.addEdge(1,2);
 	G.addEdge(1,1);
@@ -71,6 +79,17 @@ int main()
 	K.addEdge('C','G');
 	K.addEdge('G','D');
 
+	H.addEdge(1,2);
+	H.addEdge(1,1);
+	H.addEdge(1,5);
+	H.addEdge(1,6);
+	H.addEdge(6,3);
+	H.addEdge(3,4);
+	H.addEdge(4,8);
+	H.addEdge(3,7);
+	H.addEdge(7,4);
+
+
 	cout << "Graph G: " << endl;
 	G.print();
 	cout << "Edge count: " << G.getEdgeCount() << endl;
@@ -79,6 +98,11 @@ int main()
 	cout << "Graph K: " << endl;
 	K.print();
 	cout << "Edge count: " << K.getEdgeCount() << endl;
+	cout << endl;
+	
+	cout << "Graph H: " << endl;
+	H.print();
+	cout << "Edge count: " << H.getEdgeCount() << endl;
 	cout << endl;
 
 	cout << "Degree Seqeuncing: " << endl;
@@ -93,10 +117,24 @@ int main()
 		cout << degK[i] << " ";
 	cout << endl;
 
+	cout << "Graph H: " << endl;
+	std::vector<int> degH = H.degreeSeq();
+	for (int i = 0; i < degH.size(); i++)
+		cout << degH[i] << " ";
+	cout << endl;
+
 	if (G.degreeSeq(degG, degK))
 		cout << "They are the same." << endl;
 	else
 		cout << "They are not the same." << endl;
 		
+	if (G.degreeSeq(degG, degH))
+		cout << "They are the same." << endl;
+	else
+		cout << "They are not the same." << endl;
+
+	G.permutation(degG, degH, H);
+
+	
 	return 0;
 }
