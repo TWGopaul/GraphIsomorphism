@@ -104,7 +104,7 @@ class Graph
 
 		//returns true if H's adj lists are permutations of G's adj lists
 		//takes G's and H's deg sequence veectors and H's vertex map as parameters
-		bool permutation(std::vector<int>, std::vector<int>, const Graph<T> &);
+		bool permutation(std::vector<int>, std::vector<int>, Graph<T> &);
 };
 	
 #include "graph.cpp"

@@ -135,5 +135,7 @@ int main()
 	G.permutation(udegG, udegH, H);
 
 	
+
+	
 	return 0;
 }

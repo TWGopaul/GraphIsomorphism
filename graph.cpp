@@ -442,7 +442,7 @@ int Graph<T>::factorial(int n)
 
 
 template<class T>
-bool Graph<T>::permutation(std::vector<int>a, std::vector<int>b, const Graph<T> &H)
+bool Graph<T>::permutation(std::vector<int>a, std::vector<int>b, Graph<T> &H)
 {
 	//compare if deg seg of G.vertex[i] == deg seq of H.vertex[i]
 	//	check if the adjacency list of G.vertex[i] is_perutation of adj list of H.vertex[j]
@@ -453,34 +453,42 @@ bool Graph<T>::permutation(std::vector<int>a, std::vector<int>b, const Graph<T> 
 	int count = 0;	//count how many times a permutation is found
 	std::vector<int>found;	//vector to store found permutations in H, so they are not searched again
 
-	for(int i = 0; i < a.size(); i++)	//iterate through a's deg seq vector; sizes should be the same already
+	for(int i = 1; i <= a.size(); i++)	//iterate through a's deg seq vector; sizes should be the same already
 	{
 		bool perm = false;
 		
 		//while a permuation of G.vertices[i] has not been found
 		while(!perm)
-		for(int j = 0; j < b.size(); j++) //iterate through b's deg seq vector
+		for(int j = 1; j <= b.size(); j++) //iterate through b's deg seq vector
 		{
-			std::cout << "Here" << std::endl;
 			std::vector<int>::iterator it;
 			it = find(found.begin(), found.end(), j);
 			//if deg seq matches && a perm at H.vertices[j] doesnt alrady exist
 			if((a[i] == b[j]) && (it == found.end()))
 			{
-
 				std::cout << "In permute: " << std::endl;
-				for (auto i = this->vertices.begin(); i != vertices.end(); i++)
-					std::cout << this->vertices.second << std::endl;
+				//std::map<int, std::vector<int>> vertices
+				std::vector<int> tempG = this->vertices[i];
+				for (auto m = vertices[i].begin(); m != vertices[i].end(); m++)
+					std::cout << *m << std::endl;
+				for (int m = 0; m < tempG.size(); m++)
+					std::cout << tempG[m] << " ";
+				std::vector<int> tempH = H.vertices[j];
+				std::cout << std::endl;
+				for (int m = 0; m < tempH.size(); m++)
+                                        std::cout << tempH[m] << " ";
+				std::cout << std::endl;
 				std::cout << "Here1" << std::endl;
 				//check if H's adj list at j is permutation of adj list of G at i
-				/*perm = is_permutation(tempG.begin(), tempG.end(), tempH.begin());
+				perm = is_permutation(tempG.begin(), tempG.end(), tempH.begin());
 				if(perm)
 				{
 					count++;
 					//push H.vertices[j] onto a vector so that we don't look at again,
 					found.push_back(j);	
-				}*/
+				}
 			}
+			
 						
 		}
 	}	
