@@ -96,7 +96,7 @@ class Graph
 		
 		int getEdgeCount();
 
-		std::vector<int> degreeSeq();
+		std::vector<int> degreeSeq(int);
 
 		bool degreeSeq(std::vector<int>, std::vector<int>);
 		

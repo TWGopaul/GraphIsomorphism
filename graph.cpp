@@ -359,8 +359,8 @@ template<class T>
 bool Graph<T>::is_iso(const Graph<T> & H)
 {
 	bool iso = false;
-	std::vector<int> degG = this->degreeSec();
-	std::vector<int> degH = H.degreeSec();
+	std::vector<int> degG = this->degreeSec(1);
+	std::vector<int> degH = H.degreeSec(1);
 	if (this->count_v != H.count_v)//vertices must match
 		return false;
 	else if (this->count_e != H.count_e)//edges must match
@@ -401,7 +401,7 @@ int Graph<T>::getEdgeCount()
 }
 
 template<class T>
-std::vector<int> Graph<T>::degreeSeq()
+std::vector<int> Graph<T>::degreeSeq(int sort)
 {
 	std::vector<int> degree;
 	int count = 0;
@@ -413,8 +413,8 @@ std::vector<int> Graph<T>::degreeSeq()
 			count++;
 		degree.push_back(count);	
 	}
-
-	std::sort(degree.begin(), degree.end());
+	if (sort == 1)
+		std::sort(degree.begin(), degree.end());
 		
 	return degree;
 }
@@ -458,23 +458,28 @@ bool Graph<T>::permutation(std::vector<int>a, std::vector<int>b, const Graph<T> 
 		bool perm = false;
 		
 		//while a permuation of G.vertices[i] has not been found
-		while(!(perm))
+		while(!perm)
 		for(int j = 0; j < b.size(); j++) //iterate through b's deg seq vector
 		{
+			std::cout << "Here" << std::endl;
+			std::vector<int>::iterator it;
+			it = find(found.begin(), found.end(), j);
 			//if deg seq matches && a perm at H.vertices[j] doesnt alrady exist
-			if((a[i] == b[j]) && (found[j] == 0))
+			if((a[i] == b[j]) && (it == found.end()))
 			{
-				std::vector<int>tempG = vertices.find(i)->second;	//iterator at pos G[i]
-				std::vector<int>tempH= H.vertices.find(j)->second;	//iterator at pos H[j]
+
+				std::cout << "In permute: " << std::endl;
+				for (auto i = this->vertices.begin(); i != vertices.end(); i++)
+					std::cout << this->vertices.second << std::endl;
+				std::cout << "Here1" << std::endl;
 				//check if H's adj list at j is permutation of adj list of G at i
-				perm = is_permutation(tempG.begin(), tempG.end(),
-					tempH.begin());
+				/*perm = is_permutation(tempG.begin(), tempG.end(), tempH.begin());
 				if(perm)
 				{
 					count++;
 					//push H.vertices[j] onto a vector so that we don't look at again,
 					found.push_back(j);	
-				}
+				}*/
 			}
 						
 		}

@@ -20,23 +20,13 @@ int main()
 
 	//Graph H for testing permutations	
 	Graph<int> H(UNDIRECTED);
+	
 	for (int i = 1; i <= 8; i++)
 	{
 		G.addVertex(i);
 		H.addVertex(i);
 	}
 	
-	/*
-	K.addVertex(A);
-	K.addVertex(B);
-	K.addVertex(C);
-	K.addVertex(D);
-	K.addVertex(E);
-	K.addVertex(F);
-	K.addVertex(G);
-	K.addVertex(H);
-	*/
-
 	K.addVertex('A');
         K.addVertex('B');
         K.addVertex('C');
@@ -107,18 +97,18 @@ int main()
 
 	cout << "Degree Seqeuncing: " << endl;
 	cout << "Graph G: " << endl;
-	std::vector<int> degG = G.degreeSeq();
+	std::vector<int> degG = G.degreeSeq(1);
 	for (int i = 0; i < degG.size(); i++)
 		cout << degG[i] << " ";
 	cout << endl;
 	cout << "Graph K: " << endl;
-	std::vector<int> degK = K.degreeSeq();
+	std::vector<int> degK = K.degreeSeq(1);
 	for (int i =0; i < degK.size(); i++)
 		cout << degK[i] << " ";
 	cout << endl;
 
 	cout << "Graph H: " << endl;
-	std::vector<int> degH = H.degreeSeq();
+	std::vector<int> degH = H.degreeSeq(1);
 	for (int i = 0; i < degH.size(); i++)
 		cout << degH[i] << " ";
 	cout << endl;
@@ -132,8 +122,17 @@ int main()
 		cout << "They are the same." << endl;
 	else
 		cout << "They are not the same." << endl;
-
-	G.permutation(degG, degH, H);
+	std::vector<int> udegG = G.degreeSeq(0);
+	std::vector<int> udegH = H.degreeSeq(0);
+	cout << "Unsorted G: ";
+	for (int i = 0; i < udegG.size(); i++)
+		cout << udegG[i] << " ";
+	cout << endl;
+	cout << "Unsorted H: ";
+	for (int i = 0; i < udegH.size(); i++)
+		cout << udegH[i] << " ";
+	cout << endl;
+	G.permutation(udegG, udegH, H);
 
 	
 	return 0;
