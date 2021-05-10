@@ -96,15 +96,18 @@ class Graph
 		
 		int getEdgeCount();
 
-		std::vector<int> degreeSeq(int);
+		std::map<T, int> degreeSeqMap(int);
+		
+		//still need this function for comparing degree sequences
+		std::vector<int> degreeSeqVect(int);
 
-		bool degreeSeq(std::vector<int>, std::vector<int>);
+		bool degreeSeqComp(std::vector<int>, std::vector<int>);
 		
 		int factorial(int n);
 
 		//returns true if H's adj lists are permutations of G's adj lists
 		//takes G's and H's deg sequence veectors and H's vertex map as parameters
-		bool permutation(std::vector<int>, std::vector<int>, Graph<T> &);
+		bool permutation(std::map<T,int>, std::map<T,int>, Graph<T> &);
 };
 	
 #include "graph.cpp"

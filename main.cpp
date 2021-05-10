@@ -78,7 +78,8 @@ int main()
 	H.addEdge(4,8);
 	H.addEdge(3,7);
 	H.addEdge(7,4);
-
+	//add extra edge to test permutation
+	//H.addEdge(7,5);
 
 	cout << "Graph G: " << endl;
 	G.print();
@@ -97,33 +98,33 @@ int main()
 
 	cout << "Degree Seqeuncing: " << endl;
 	cout << "Graph G: " << endl;
-	std::vector<int> degG = G.degreeSeq(1);
+	std::vector<int> degG = G.degreeSeqVect(1);
 	for (int i = 0; i < degG.size(); i++)
 		cout << degG[i] << " ";
 	cout << endl;
 	cout << "Graph K: " << endl;
-	std::vector<int> degK = K.degreeSeq(1);
+	std::vector<int> degK = K.degreeSeqVect(1);
 	for (int i =0; i < degK.size(); i++)
 		cout << degK[i] << " ";
 	cout << endl;
 
 	cout << "Graph H: " << endl;
-	std::vector<int> degH = H.degreeSeq(1);
+	std::vector<int> degH = H.degreeSeqVect(1);
 	for (int i = 0; i < degH.size(); i++)
 		cout << degH[i] << " ";
 	cout << endl;
 
-	if (G.degreeSeq(degG, degK))
+	if (G.degreeSeqComp(degG, degK))
 		cout << "They are the same." << endl;
 	else
 		cout << "They are not the same." << endl;
 		
-	if (G.degreeSeq(degG, degH))
+	if (G.degreeSeqComp(degG, degH))
 		cout << "They are the same." << endl;
 	else
 		cout << "They are not the same." << endl;
-	std::vector<int> udegG = G.degreeSeq(0);
-	std::vector<int> udegH = H.degreeSeq(0);
+	std::vector<int> udegG = G.degreeSeqVect(0);
+	std::vector<int> udegH = H.degreeSeqVect(0);
 	cout << "Unsorted G: ";
 	for (int i = 0; i < udegG.size(); i++)
 		cout << udegG[i] << " ";
@@ -132,10 +133,17 @@ int main()
 	for (int i = 0; i < udegH.size(); i++)
 		cout << udegH[i] << " ";
 	cout << endl;
-	G.permutation(udegG, udegH, H);
 
-	
 
-	
+	std::map<int,int> degMapG = G.degreeSeqMap(0);
+	std::map<int,int> degMapH = H.degreeSeqMap(0);
+
+	if(G.permutation(degMapG, degMapH, H))
+		cout << "The adjacency lists of H are permutations of the adjacency lists of G"
+		<< endl;
+	else
+		cout << "The adjacency lists of H are not permutations of the adjacency lists of G"
+		<< endl;
+		
 	return 0;
 }
