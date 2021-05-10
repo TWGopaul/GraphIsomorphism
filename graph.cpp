@@ -401,9 +401,9 @@ int Graph<T>::getEdgeCount()
 }
 
 template<class T>
-std::vector<int> Graph<T>::degreeSeq(int sort)
+std::map<T,int> Graph<T>::degreeSeq(int sort)
 {
-	std::vector<int> degree;
+	std::map<int,int> degree;
 	int count = 0;
 
 	for (auto i = this->vertices.begin(); i != this->vertices.end(); i++)
@@ -411,7 +411,7 @@ std::vector<int> Graph<T>::degreeSeq(int sort)
 		count = 0;
 		for (auto j = i->second.begin(); j != i->second.end(); j++)
 			count++;
-		degree.push_back(count);	
+		degree.insert({i,count});
 	}
 	if (sort == 1)
 		std::sort(degree.begin(), degree.end());
@@ -420,7 +420,7 @@ std::vector<int> Graph<T>::degreeSeq(int sort)
 }
 
 template<class T>
-bool Graph<T>::degreeSeq(std::vector<int> a, std::vector<int> b)
+bool Graph<T>::degreeSeq(std::map<T,int> a, std::map<T,int> b)
 {
 	//should already be true if calling, but just in case
 	if (a.size() != b.size())
@@ -453,13 +453,13 @@ bool Graph<T>::permutation(std::vector<int>a, std::vector<int>b, Graph<T> &H)
 	int count = 0;	//count how many times a permutation is found
 	std::vector<int>found;	//vector to store found permutations in H, so they are not searched again
 
-	for(int i = 1; i <= a.size(); i++)	//iterate through a's deg seq vector; sizes should be the same already
+	for(int i = 0; i < a.size(); i++)	//iterate through a's deg seq vector; sizes should be the same already
 	{
 		bool perm = false;
 		
 		//while a permuation of G.vertices[i] has not been found
 		while(!perm)
-		for(int j = 1; j <= b.size(); j++) //iterate through b's deg seq vector
+		for(int j = 0; j < b.size(); j++) //iterate through b's deg seq vector
 		{
 			std::vector<int>::iterator it;
 			it = find(found.begin(), found.end(), j);
@@ -468,7 +468,7 @@ bool Graph<T>::permutation(std::vector<int>a, std::vector<int>b, Graph<T> &H)
 			{
 				std::cout << "In permute: " << std::endl;
 				//std::map<int, std::vector<int>> vertices
-				std::vector<int> tempG = this->vertices[i];
+				std::vector<int> tempG = this->vertices[i]; 
 				for (auto m = vertices[i].begin(); m != vertices[i].end(); m++)
 					std::cout << *m << std::endl;
 				for (int m = 0; m < tempG.size(); m++)
