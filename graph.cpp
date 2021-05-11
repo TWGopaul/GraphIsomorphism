@@ -424,7 +424,7 @@ std::vector<int> Graph<T>::degreeSeqVect(int sort)
 template<class T>
 std::map<T,int> Graph<T>::degreeSeqMap(int sort)
 {
-	std::map<int,int> degree;
+	std::map<T,int> degree;
 	int count = 0;
 
 	for (auto i = this->vertices.begin(); i != this->vertices.end(); i++)
@@ -488,11 +488,7 @@ bool Graph<T>::permutation(std::map<T,int>a, std::map<T,int>b, Graph<T> &H)
 			{
 		
 				std::vector<int>::iterator it;
-				//it = find(found.begin(), found.end(), j);
 				it = find(found.begin(), found.end(), (j->first)); //search found for the key, j
-				//printf("Here 1 j =%d ; i = %d\n", *j, *i);
-				//if deg seq matches && a perm at H.vertices[j] doesnt alrady exist
-				//if((a[i] == b[j]) && (it == found.end()))
 				if((i->first == j->first) && (i->second == j->second) && (it == found.end())) //compares if the vertex label is the same, deg seq's are the same  and a permutation of j is not already used
 				{
 					
@@ -527,29 +523,6 @@ bool Graph<T>::permutation(std::map<T,int>a, std::map<T,int>b, Graph<T> &H)
 	
 				printf("\n");
 	
-	
-			/*		std::cout << "In permute: " << std::endl;
-					//std::map<int, std::vector<int>> vertices
-					std::vector<int> tempG = this->vertices[i]; 
-					for (auto m = vertices[i].begin(); m != vertices[i].end(); m++)
-						std::cout << *m << std::endl;
-					for (int m = 0; m < tempG.size(); m++)
-						std::cout << tempG[m] << " ";
-					std::vector<int> tempH = H.vertices[j];
-					std::cout << std::endl;
-					for (int m = 0; m < tempH.size(); m++)
-						std::cout << tempH[m] << " ";
-					std::cout << std::endl;
-					std::cout << "Here1" << std::endl;
-					//check if H's adj list at j is permutation of adj list of G at i
-					perm = is_permutation(tempG.begin(), tempG.end(), tempH.begin());
-					if(perm)
-					{
-						count++;
-						//push H.vertices[j] onto a vector so that we don't look at again,
-						found.push_back(j);	
-					} 
-			*/
 				} //end if
 			} // end for
 		
