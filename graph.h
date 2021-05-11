@@ -88,7 +88,7 @@ class Graph
 
 		//PROJECT 3 FUNCTIONS
 
-		bool is_iso(const Graph<T> &);
+		bool is_iso(Graph<T> &);
 
 		bool is_aut(const Graph<T> &, const Graph<T> &);
 		
@@ -96,8 +96,10 @@ class Graph
 		
 		int getEdgeCount();
 
-		std::map<T, int> degreeSeqMap(int);
+		std::map<T, int> degreeSeqMap();
 		
+		std::map<T, int> degreeSeqMapZero();
+
 		//still need this function for comparing degree sequences
 		std::vector<int> degreeSeqVect(int);
 

@@ -16,12 +16,12 @@ using namespace std;
 int main()
 {
 	Graph<int> G(UNDIRECTED);
-	Graph<char> K(UNDIRECTED);
+	Graph<int> K(UNDIRECTED);
 
 	//Graph H for testing permutations	
 	Graph<int> H(UNDIRECTED);
 	
-	for (int i = 1; i <= 9; i++)
+	for (int i = 1; i < 9; i++)
 	{
 		G.addVertex(i);
 		H.addVertex(i);
@@ -58,7 +58,7 @@ int main()
 	G.addEdge(4,8);
 	G.addEdge(3,7);
 	G.addEdge(7,4);
-	G.addEdge(9,1);
+	//G.addEdge(9,1);
 
 	K.addEdge('A','B');
 	K.addEdge('A','A');
@@ -80,9 +80,9 @@ int main()
 	H.addEdge(3,7);
 	H.addEdge(7,4);
 	//add extra edge to test permutation
-	H.addEdge(7,5);
+	//H.addEdge(7,5);
 	//Make 9 connect to a different node to test permuation	
-	H.addEdge(9,2);
+	//H.addEdge(9,2);
 
 	cout << "Graph G: " << endl;
 	G.print();
@@ -138,15 +138,18 @@ int main()
 	cout << endl;
 
 
-	std::map<int,int> degMapG = G.degreeSeqMap(0);
-	std::map<int,int> degMapH = H.degreeSeqMap(0);
-
+	std::map<int,int> degMapG = G.degreeSeqMap();
+	std::map<int,int> degMapH = H.degreeSeqMap();
+	/*
 	if(G.permutation(degMapG, degMapH, H))
 		cout << "The adjacency lists of H are permutations of the adjacency lists of G"
 		<< endl;
 	else
 		cout << "The adjacency lists of H are not permutations of the adjacency lists of G"
 		<< endl;
-		
+	*/
+	
+	G.is_iso(K);
+
 	return 0;
 }

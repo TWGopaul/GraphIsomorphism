@@ -356,28 +356,37 @@ void Graph<T>::SCCvisit(int u, std::map<int, color_t> & color)
 }
 
 template<class T>
-bool Graph<T>::is_iso(const Graph<T> & H)
+bool Graph<T>::is_iso(Graph<T> & H)
 {
 	bool iso = false;
-	std::vector<int> degG = this->degreeSecVect(1);
-	std::vector<int> degH = H.degreeSecVect(1);
+	std::vector<int> degG = this->degreeSeqVect(1);
+	std::vector<int> degH = H.degreeSeqVect(1);
 	if (this->count_v != H.count_v)//vertices must match
-		return false;
+	{
+		std::cout << "Vertex counts different! They are not isomorphic!" << std::endl;
+		iso = false;
+	}
 	else if (this->count_e != H.count_e)//edges must match
-		return false;
+	{
+		std::cout << "Edge counts are different! They are not isomorphic!" << std::endl;
+		iso = false;
+	}
 	else if (this->graph_t != H.graph_t)//graph types must match
-		return false;
+	{
+		std::cout << "Graph types are different! They are not isomorphic!" << std::endl;
+		iso = false;
+	}
 	else if (!degreeSeqComp(degG, degH))//degree sequences must match
-		return false;
+	{
+		std::cout << "Degree sequences are different! they are not isomorphic!" << std::endl;
+		iso = false;
+	}
 	else
-	{	
-		//permutate the first function and compare to the second
-		//using brute force
-//		iso = permutate();
-		if (iso == false)
-			std::cout << "The two graphs aren't isomorphic!" << std::endl;
+	{
+		if (iso = permutation(this->degreeSeqMap(), H.degreeSeqMap(), H))
+			std::cout << "The graphs are isomorphic!" << std::endl;
 		else
-			std::cout << "The two graphs are isomorphic!" << std::endl;
+			std::cout << "The graphs are not isomorphic!" << std::endl;
 	}
 	return iso;
 }
@@ -400,7 +409,6 @@ int Graph<T>::getEdgeCount()
 	return this->count_e;
 }
 
-
 template<class T>
 std::vector<int> Graph<T>::degreeSeqVect(int sort)
 {
@@ -420,24 +428,38 @@ std::vector<int> Graph<T>::degreeSeqVect(int sort)
 	return degree;
 }
 
-
 template<class T>
-std::map<T,int> Graph<T>::degreeSeqMap(int sort)
+std::map<T,int> Graph<T>::degreeSeqMap()
 {
 	std::map<T,int> degree;
 	int count = 0;
-
+	int j = 0;
 	for (auto i = this->vertices.begin(); i != this->vertices.end(); i++)
 	{
 		count = 0;
 		for (auto j = i->second.begin(); j != i->second.end(); j++)
 			count++;
-		degree.insert({i->first,count});
+		degree.insert({i->first,count});//degree.insert({i->first,count});
+		j++;
 	}
-//	if (sort == 1)
-//		std::sort(degree.begin(), degree.end());
-		
 	return degree;
+}
+
+template<class T>
+std::map<T,int> Graph<T>::degreeSeqMapZero()
+{
+        std::map<T,int> degree;
+        int count = 0;
+        int j = 0;
+        for (auto i = this->vertices.begin(); i != this->vertices.end(); i++)
+        {
+                count = 0;
+                for (auto j = i->second.begin(); j != i->second.end(); j++)
+                        count++;
+                degree.insert({j,count});//degree.insert({i->first,count});
+                j++;
+        }
+        return degree;
 }
 
 template<class T>
@@ -461,77 +483,45 @@ int Graph<T>::factorial(int n)
 		return n * factorial(n-1);
 }
 
-
 template<class T>
 bool Graph<T>::permutation(std::map<T,int>a, std::map<T,int>b, Graph<T> &H)
 {
-	//compare if deg seg of G.vertex[i] == deg seq of H.vertex[i]
-	//	check if the adjacency list of G.vertex[i] is_perutation of adj list of H.vertex[j]
-	//	if not, 
-	//		move onto next vertex in H w/ matching deg seq
-	//		if none exists, there isn't an isomorphism 
+
+	//TODO:
+	//	Problem: Vertex labels must be equal to compare properly == bad 
+	//	We want the graphs to be not necessarily equal in vertex labels
 	bool perm = false;
 	int count = 0;	//count how many times a permutation is found
 	std::vector<int>found;	//vector to store found permutations in H, so they are not searched again
 
-	//for(int i = 0; i < a.size(); i++)	//iterate through a's deg seq vector; sizes should be the same already
 	for(auto i = a.begin(); i != a.end(); i++) //iterate through a's pairs
 	{
 		bool perm = false;
-		printf("Looking for permutations of vector %d 's adj list\n", i->first);	
-		//while a permuation of G.vertices[i] has not been found
 		while(!perm)
 		{
-			
-			//for(int j = 0; j < b.size(); j++) //iterate through b's deg seq vector
 			for(auto j = b.begin(); j != b.end(); j++)	//iterate through b's pairs
 			{
-		
 				std::vector<int>::iterator it;
 				it = find(found.begin(), found.end(), (j->first)); //search found for the key, j
-				if((i->first == j->first) && (i->second == j->second) && (it == found.end())) //compares if the vertex label is the same, deg seq's are the same  and a permutation of j is not already used
+				//compares if the vertex l deg seq's are the same  and a permutation of j is not already used
+				if((i->first == j->first) && (i->second == j->second) && (it == found.end())) 
 				{
-					
-					std::cout << "In permute: " << std::endl;
-					//std::map<int, std::vector<int>> vertices
 					std::vector<int> tempG = this->vertices[i->first]; 
-					for (auto m = vertices[i->first].begin(); m != vertices[i->first].end(); m++)
-						std::cout << *m << std::endl;
-					for (int m = 0; m < tempG.size(); m++)
-						std::cout << tempG[m] << " ";
 					std::vector<int> tempH = H.vertices[j->first];
-					std::cout << std::endl;
-					for (int m = 0; m < tempH.size(); m++)
-						std::cout << tempH[m] << " ";
-					std::cout << std::endl;
-					//check if H's adj list at j is permutation of adj list of G at i
+					
+					///////////
 					perm = is_permutation(tempG.begin(), tempG.end(), tempH.begin());
-		
-					std::cout << "Perm == " << perm << std::endl;
 					if(perm)
 					{
 						count++;
-						//push H.vertices[j] onto a vector so that we don't look at again,
 						found.push_back(j->first);	
 					}
-				
-			
-				std::vector<int>::iterator it;
-				printf("Printing found vector:\n");
-				for(it = found.begin(); it != found.end(); it++){
-					printf("%d ", *it);}
-	
-				printf("\n");
-	
 				} //end if
 			} // end for
-		
-			//this 'breaks' the for loop when the if statement is not entered, otherwise
-			//while(!perm) is never satisfied and for loop cycles forever
 			perm = true;	
 		}//end while
 	}//end for	
-
+	
 	return ((count == a.size())&&(count  == found.size())) ?  true: false;
 }
 
