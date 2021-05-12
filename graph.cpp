@@ -6,19 +6,7 @@
 #include "graph.h"
 #include <algorithm>
 
-//Useful vertex functions: begin, end, size, empty, push_back, pop_back, insert
-//			   erase, swap
-//
-//Useful map functions: begin, end, empty, size, insert, erase, swap, find, lower_bound
-//			higher_bound
-//
-//Useful queue functions: empty, size, front, back, push, emplace, pop, swap
-
-/*enum letter_t 
-{
-	A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
-};*/
-
+//Default Constructor
 template<class T>
 Graph<T>::Graph() 
 {
@@ -29,6 +17,7 @@ Graph<T>::Graph()
 	this->count_e = 0;
 }
 
+//Main Constructor
 template<class T>
 Graph<T>::Graph(const graph_type & t)
 {
@@ -42,6 +31,7 @@ Graph<T>::Graph(const graph_type & t)
         this->count_e = 0;
 }
 
+//Copy Constructor
 template<class T>
 Graph<T>::Graph(const Graph & old)
 {
@@ -52,9 +42,12 @@ Graph<T>::Graph(const Graph & old)
 	this->count_v = old.count_v;
 	this->count_e = old.count_e;
 }
+
+//Destructor
 template<class T>
 Graph<T>::~Graph() {}
 
+//Overloaded assignment operator
 template<class T>
 void Graph<T>::operator=(const Graph & old)
 {
@@ -66,6 +59,7 @@ void Graph<T>::operator=(const Graph & old)
         this->count_e = old.count_e;
 }
 
+//Adds a vertex to the graph, does not allow duplicates.
 template<class T>
 void Graph<T>::addVertex(T x)
 {
@@ -82,6 +76,7 @@ void Graph<T>::addVertex(T x)
 		 std::cout << "Vertex " << x << " is already in the graph!" << std::endl;
 }
 
+//Adds an edge to the graph, does not allow duplicates.
 template<class T>
 void Graph<T>::addEdge(T x, T y)
 {
@@ -102,9 +97,7 @@ void Graph<T>::addEdge(T x, T y)
 			}
 			if (!exists)
 			{
-				//happens regardless of directed/undirected
 				vertices[x].push_back(y);
-				//if the graph is undirected, we will reverse the relationship
 				if (graph_t == UNDIRECTED && vertices[x] != vertices[y])
 					vertices[y].push_back(x);
 				this->count_e++;
@@ -119,6 +112,7 @@ void Graph<T>::addEdge(T x, T y)
 		std::cout << "Vertex " << x << " does not exist! Cannot create edge!" << std::endl;
 }
 
+//Prints the graph in an adjacency list format.
 template<class T>
 void Graph<T>::print()
 {
@@ -133,6 +127,7 @@ void Graph<T>::print()
 	}
 }
 
+//Prints the graph using the BFS alogrithm.
 template<class T>
 void Graph<T>::printBFS(T x)
 {
@@ -203,6 +198,7 @@ void Graph<T>::printBFS(T x)
 	}
 }
 
+//Performs the graph using the DFS algorithm, has an integer toggle to print/not print.
 template<class T>
 void Graph<T>::DFSvisit(int u, int print, std::map<int, color_t> & color, std::map<int, int> & parent)
 {
@@ -229,6 +225,7 @@ void Graph<T>::DFSvisit(int u, int print, std::map<int, color_t> & color, std::m
 	this->finish[u] = this->time;
 }
 
+//Toggle print option for DFS algorithm.
 template<class T>
 void Graph<T>::printDFS(int print)
 {
@@ -259,6 +256,7 @@ void Graph<T>::printDFS(int print)
 	std::cout << std::endl;
 }
 
+//Performs a topological sort on a graph.
 template<class T>
 void Graph<T>::topSortPrint()
 {
@@ -286,18 +284,21 @@ void Graph<T>::topSortPrint()
 	std::cout << std::endl;
 }
 
+//Checks if the graph is empty first.
 template<class T>
 bool Graph<T>::is_empty()
 {
 	return this->vertices.empty();
 }
 
+//Checks the graph type (undirected/directed).
 template<class T>
 graph_type Graph<T>::getGraphType()
 {
 	return this->graph_t;
 }
 
+//Prints the graphs Strongly Connected Components
 template<class T>
 void Graph<T>::SCCprint()
 {
@@ -341,6 +342,7 @@ void Graph<T>::SCCprint()
         }
 }
 
+//SCC visit algorithm for above method.
 template<class T>
 void Graph<T>::SCCvisit(int u, std::map<int, color_t> & color)
 {
@@ -355,6 +357,7 @@ void Graph<T>::SCCvisit(int u, std::map<int, color_t> & color)
                 std::cout << i << " -> ";
 }
 
+//Checks to see if two different graphs are isomorphic.
 template<class T>
 bool Graph<T>::is_iso(Graph<T> & H)
 {
@@ -396,24 +399,28 @@ bool Graph<T>::is_iso(Graph<T> & H)
 	return iso;
 }
 
+//Checks for automorphisms --- TODO
 template<class T>
 bool Graph<T>::is_aut(const Graph<T> & G, const Graph<T> & H)
 {
 	return false;
 }
 
+//Gets the number of vertices in the graph.
 template<class T>
 int Graph<T>::getVertexCount()
 {
 	return this->count_v;
 }
 
+//Gets the number of edges in the graph.
 template<class T>
 int Graph<T>::getEdgeCount()
 {
 	return this->count_e;
 }
 
+//Gets a vector that contains the degree sequence of a graph, has a sort toggle.
 template<class T>
 std::vector<int> Graph<T>::degreeSeqVect(int sort)
 {
@@ -433,6 +440,7 @@ std::vector<int> Graph<T>::degreeSeqVect(int sort)
 	return degree;
 }
 
+//Gets a map that contains the degree sequence while keeping its vertex.
 template<class T>
 std::map<T,int> Graph<T>::degreeSeqMap()
 {
@@ -450,7 +458,7 @@ std::map<T,int> Graph<T>::degreeSeqMap()
 	return degree;
 }
 
-
+//Gets a map that contains the degree sequence of a vertex, different parameters.
 template<class T>
 std::map<T,int> Graph<T>::degreeSeqMap(std::map<T,std::vector<T>> X)
 {
@@ -468,6 +476,8 @@ std::map<T,int> Graph<T>::degreeSeqMap(std::map<T,std::vector<T>> X)
 	return degree;
 }
 
+//Gets a map that reindexes the vertices at 0,1,...,n while also adjusting the adjacency
+//list to match the new vertex set. Important for comparing the graphs in the permuation method.
 template<class T>
 std::map<T,std::vector<T>> Graph<T>::zeroMap()
 {
@@ -507,6 +517,7 @@ std::map<T,std::vector<T>> Graph<T>::zeroMap()
         return degree;
 }
 
+//Comparison function between two vector degree sequences.
 template<class T>
 bool Graph<T>::degreeSeqComp(std::vector<int> a, std::vector<int> b)
 {
@@ -519,6 +530,7 @@ bool Graph<T>::degreeSeqComp(std::vector<int> a, std::vector<int> b)
 	return true;
 }
 
+//Permutation function to compare the adjacency lists of each vertex in each graph.
 template<class T>
 bool Graph<T>::permutation(std::map<T,int>a, std::map<T,int>b, std::map<T,std::vector<T>> &X, std::map<T,std::vector<T>> &Y)
 {
@@ -539,8 +551,8 @@ bool Graph<T>::permutation(std::map<T,int>a, std::map<T,int>b, std::map<T,std::v
 				if((i->first == j->first) && (i->second == j->second) && (it == found.end())) 
 				{
 					//setting these vectors equal to the adjacency lists for each newly indexed vertex
-					std::vector<int> tempG = X[i->first];
-					std::vector<int> tempH = Y[j->first];
+					std::vector<T> tempG = X[i->first];
+					std::vector<T> tempH = Y[j->first];
 					//std::vector<int> tempG = this->vertices[i->first]; 
 					//std::vector<int> tempH = H.vertices[j->first];
 					

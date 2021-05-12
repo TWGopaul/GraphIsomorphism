@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include "graph.h"
+#include "timer.h"
 
 using namespace std;
 
@@ -35,19 +36,6 @@ int main()
         K.addVertex('F');
         K.addVertex('G');
         K.addVertex('H');
-
-	cout << "Graph G: " << endl;
-	G.print();
-	cout << "Vertex count: " << G.getVertexCount() << endl;
-	cout << endl;
-	cout << "Graph K: " << endl;
-	K.print();
-	cout << "Vertex count: " << K.getVertexCount() << endl;
-	cout << endl;
-	cout << "Graph H: " << endl;
-	H.print();
-	cout << "Vertex count: " << H.getVertexCount() << endl;
-	cout << endl;
 
 	G.addEdge(1,2);
 	G.addEdge(1,1);
@@ -79,27 +67,28 @@ int main()
 	H.addEdge(4,8);
 	H.addEdge(3,7);
 	H.addEdge(7,4);
-	//add extra edge to test permutation
-	//H.addEdge(7,5);
-	//Make 9 connect to a different node to test permuation	
-	//H.addEdge(9,2);
 
 	cout << "Graph G: " << endl;
 	G.print();
 	cout << "Edge count: " << G.getEdgeCount() << endl;
+	cout << "Vertex count: " << G.getVertexCount() << endl;
 	cout << endl;
 
 	cout << "Graph K: " << endl;
 	K.print();
 	cout << "Edge count: " << K.getEdgeCount() << endl;
+	cout << "Vertex count: " << K.getVertexCount() << endl;
 	cout << endl;
 	
 	cout << "Graph H: " << endl;
 	H.print();
 	cout << "Edge count: " << H.getEdgeCount() << endl;
+	cout << "Vertex count: " << H.getVertexCount() << endl;
 	cout << endl;
 
-	cout << "Degree Seqeuncing: " << endl;
+	cout << "Degree Seqeunces" << endl;
+	cout << "----------------" << endl;
+	cout << endl;
 	cout << "Graph G: " << endl;
 	std::vector<int> degG = G.degreeSeqVect(1);
 	for (int i = 0; i < degG.size(); i++)
@@ -110,78 +99,175 @@ int main()
 	for (int i =0; i < degK.size(); i++)
 		cout << degK[i] << " ";
 	cout << endl;
-
 	cout << "Graph H: " << endl;
 	std::vector<int> degH = H.degreeSeqVect(1);
 	for (int i = 0; i < degH.size(); i++)
 		cout << degH[i] << " ";
 	cout << endl;
+	cout << "Degree sequence comparisons" << endl;
+	cout << "---------------------------" << endl;
+	cout << endl;
 
 	if (G.degreeSeqComp(degG, degK))
-		cout << "They are the same." << endl;
+		cout << "The degree sequence of G is the same as K's." << endl;
 	else
-		cout << "They are not the same." << endl;
+		cout << "The degree sequence of G is not the same as K's." << endl;
 		
 	if (G.degreeSeqComp(degG, degH))
-		cout << "They are the same." << endl;
+		cout << "The degree sequence of G is the same as H's." << endl;
 	else
-		cout << "They are not the same." << endl;
+		cout << "The degree sequence of G is not the same as K's." << endl;
 	std::vector<int> udegG = G.degreeSeqVect(0);
 	std::vector<int> udegH = H.degreeSeqVect(0);
-	cout << "Unsorted G: ";
-	for (int i = 0; i < udegG.size(); i++)
-		cout << udegG[i] << " ";
-	cout << endl;
-	cout << "Unsorted H: ";
-	for (int i = 0; i < udegH.size(); i++)
-		cout << udegH[i] << " ";
-	cout << endl;
-
-
+	
 	std::map<int,int> degMapG = G.degreeSeqMap();
 	std::map<int,int> degMapH = H.degreeSeqMap();
-	/*
-	if(G.permutation(degMapG, degMapH, H))
-		cout << "The adjacency lists of H are permutations of the adjacency lists of G"
-		<< endl;
-	else
-		cout << "The adjacency lists of H are not permutations of the adjacency lists of G"
-		<< endl;
-	*/
-
 	
+	cout << endl;
+	cout << "Isomorphism testing" << endl;
+	cout << "-------------------" << endl;
+	cout << endl;
+	cout << "G isomorphic to K?" << endl;
 	G.is_iso(K);
+	cout << endl;
+	cout << "G isomorphic to H?" << endl;
 	G.is_iso(H);
+	cout << endl;
+	cout << "K isomorphic to H?" << endl;
+	K.is_iso(H);
+	cout << endl;
+	
+	cout << "Begin thorough testing and time analysis" << endl;
+	cout << "----------------------------------------" << endl;
+	cout << endl;
+
+	Timer timer;
+	
+	cout << "G isomorphic to K?" << endl;
+	timer.start_timer();
+	G.is_iso(K);
+	timer.end_timer();
+	timer.print_time();
+	timer.reset_timer();
+	cout << endl;
+	cout << "G isomorphic to H?" << endl;
+	timer.start_timer();
+	G.is_iso(H);
+	timer.end_timer();
+	timer.print_time();
+	timer.reset_timer();
+	cout << endl;
+	cout << "K isomorphic to H?" << endl;
+	timer.start_timer();
+	K.is_iso(H);
+	timer.end_timer();
+	timer.print_time();
+	timer.reset_timer();
+	cout << endl;
 
 	Graph<int> x(UNDIRECTED);
 	Graph<int> y(UNDIRECTED);
 
-	x.addVertex(1);
-	x.addVertex(2);
-	x.addVertex(3);
-	x.addVertex(4);
-	x.addVertex(5);
-	y.addVertex(10);
-	y.addVertex(12);
-	y.addVertex(14);
-	y.addVertex(16);
-	y.addVertex(18);
+	
+	for (int i = 1; i <= 8; i++)
+	{
+		x.addVertex(i);
+		y.addVertex(9-i);
+	}
+	x.addEdge(1, 2);
+	x.addEdge(1, 3);
+	x.addEdge(2, 4);
+	x.addEdge(4, 6);
+	x.addEdge(4, 7);
+	x.addEdge(6, 5);
+	x.addEdge(5, 4);
+	x.addEdge(8, 3);
+	x.addEdge(8, 7);
 
+	y.addEdge(8,7);
+	y.addEdge(8,3);
+	y.addEdge(5,4);
+	y.addEdge(6,5);
+	y.addEdge(4,7);
+	y.addEdge(4,6);
+	y.addEdge(2,4);
+	y.addEdge(1,3);
+	y.addEdge(1,2);
 
-	x.addEdge(1,2);
-	x.addEdge(2,3);
-	x.addEdge(3,4);
-	x.addEdge(4,5);
-	x.addEdge(5,1);
-
-	y.addEdge(10,12);
-	y.addEdge(12,14);
-	y.addEdge(14,16);
-	y.addEdge(16,18);
-	y.addEdge(18,10);
-
+	cout << "Graph x: " << endl;
+	x.print();
+	cout << endl;
+	cout << "Graph y: " << endl;
+	y.print();
+	cout << endl;
+	cout << "x isomorphic to y?" << endl;
+	timer.start_timer();
 	x.is_iso(y);
-		
+	timer.end_timer();
+	timer.print_time();
+	timer.reset_timer();
+	cout << endl;
 
+	Graph<char> r(UNDIRECTED);
+	Graph<char> s(UNDIRECTED);
+	
+	r.addVertex('a');
+	r.addVertex('b');
+	r.addVertex('c');
+	r.addVertex('d');
+	r.addVertex('g');
+	r.addVertex('h');
+	r.addVertex('i');
+	r.addVertex('j');
+
+	s.addVertex('1');
+	s.addVertex('2');
+	s.addVertex('3');
+	s.addVertex('4');
+	s.addVertex('5');
+	s.addVertex('6');
+	s.addVertex('7');
+	s.addVertex('8');
+
+	r.addEdge('a','g');
+	r.addEdge('a','h');
+	r.addEdge('a','i');
+	r.addEdge('b','g');
+	r.addEdge('b','h');
+	r.addEdge('b','j');
+	r.addEdge('c','g');
+	r.addEdge('c','i');
+	r.addEdge('c','j');
+	r.addEdge('d','h');
+	r.addEdge('d','i');
+	r.addEdge('d','j');
+	
+	s.addEdge('1','2');
+	s.addEdge('1','4');
+	s.addEdge('1','5');
+	s.addEdge('2','6');
+	s.addEdge('2','3');
+	s.addEdge('3','4');
+	s.addEdge('3','7');
+	s.addEdge('4','8');
+	s.addEdge('5','6');
+	s.addEdge('5','8');
+	s.addEdge('6','7');
+	s.addEdge('7','8');
+
+	cout << "Graph r: " << endl;
+	r.print();
+	cout << endl;
+	cout << "Graph s: " << endl;
+	s.print();
+	cout << endl;
+	cout << "r isomorphic to s?" << endl;
+	timer.start_timer();
+	r.is_iso(s);
+	timer.end_timer();
+	timer.print_time();
+	timer.reset_timer();
+	cout << endl;
+	
 	return 0;
 }
