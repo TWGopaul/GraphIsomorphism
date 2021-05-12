@@ -1,0 +1,34 @@
+COSC 320 Spring '21- Project 3 
+Travis Gopaul and Mitchell Krystofiak
+
+This program determines if two graphs are isomorphic. 
+
+Files:
+graph.h/.cpp - Header file and member definitions for the graph class
+main.cpp - Driver program
+makefile - run command make to compile and create executable 'run'
+timer.h/cpp - Timing functions for testing purposes
+output.txt - Print out of test results
+
+To determine if two graphs are isomorphic, the user must first create the graphs by declaring a graph object with its data type, 
+and the graph type. For example Graph<int> G(UNDIRECTED). Next, the graph must be populated with verteces by calling the addVertex() 
+function, ie G.addVertex(). Then edges between nodes are added using addEdge(), such as G.addEdge(4,5). Finally to determine if graph
+G is an isomorphism of another graph H, call the function G.is_iso(H). 
+
+How it works:
+If an isomorphism exists, both graphs must be of the same type – directed or undirected, have the same number of vertices and edges.
+To test these attributes between graphs our graph class has member variables graph_t, count_v, count_e. is_iso() compares these values
+first, and if they are equal it continues onto testing if each graph's degree sequences match. degreeSeqVec creates a vector that is
+a the calling graph's list of degree sequences and sorts it. degreeSeqComp compares these lists. The idea is that if the lists are the
+same size and sorted, an isomorphism would imply that the lists are the same. If so, the function continues. 
+
+The zeroMap() function returns a map of the relabeled graph. First, it populates a zero indexed vector with each vector in the map of the calling graph,
+G. Then, it populates a map where the first key is 0, and the associated value is a vector containing G’s first adjacency list. G is iterated through
+in this manner effectively making each adjacency list numbered starting from 0 and sorted ascendingly. Finally, the new map is iterated through and all
+of the numbers in the adjacency list are relabeled using the first vector with the original labels. If a label in the adjacency list is equal to the first
+value in the vector, it gets relabeled to the current index in the vector.  
+
+Finally, the  the permuation() function is called to iterate through each adjacency list in G and determine if H contains an adjacency list that is a 
+permutation of the current list. If it is, the list in H is placed into a vector. The vector is checked upon every iteration to ensure that the same
+list is not examined more than once. If the function is able to iterate through all lists in G and finds that all lists in H are permutations in a one-to-one
+relationship, then an isomorphism exists. 
