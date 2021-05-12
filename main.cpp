@@ -148,8 +148,40 @@ int main()
 		cout << "The adjacency lists of H are not permutations of the adjacency lists of G"
 		<< endl;
 	*/
+
 	
 	G.is_iso(K);
+	G.is_iso(H);
+
+	Graph<int> x(UNDIRECTED);
+	Graph<int> y(UNDIRECTED);
+
+	x.addVertex(1);
+	x.addVertex(2);
+	x.addVertex(3);
+	x.addVertex(4);
+	x.addVertex(5);
+	y.addVertex(10);
+	y.addVertex(12);
+	y.addVertex(14);
+	y.addVertex(16);
+	y.addVertex(18);
+
+
+	x.addEdge(1,2);
+	x.addEdge(2,3);
+	x.addEdge(3,4);
+	x.addEdge(4,5);
+	x.addEdge(5,1);
+
+	y.addEdge(10,12);
+	y.addEdge(12,14);
+	y.addEdge(14,16);
+	y.addEdge(16,18);
+	y.addEdge(18,10);
+
+	x.is_iso(y);
+		
 
 	return 0;
 }

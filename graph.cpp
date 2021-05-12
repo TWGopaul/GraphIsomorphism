@@ -383,7 +383,12 @@ bool Graph<T>::is_iso(Graph<T> & H)
 	}
 	else
 	{
-		if (iso = permutation(this->degreeSeqMap(), H.degreeSeqMap(), H))
+		//creates two maps vertices are zero indexed
+		std::map<T,std::vector<T>> mapG = this->zeroMap();
+		std::map<T,std::vector<T>> mapH = this->zeroMap();
+		std::map<T,int> jerry = degreeSeqMap(mapG);
+		std::map<T,int> oscar = degreeSeqMap(mapH);
+		if((iso = permutation(jerry, oscar, mapG, mapH)))
 			std::cout << "The graphs are isomorphic!" << std::endl;
 		else
 			std::cout << "The graphs are not isomorphic!" << std::endl;
@@ -445,20 +450,60 @@ std::map<T,int> Graph<T>::degreeSeqMap()
 	return degree;
 }
 
+
 template<class T>
-std::map<T,int> Graph<T>::degreeSeqMapZero()
+std::map<T,int> Graph<T>::degreeSeqMap(std::map<T,std::vector<T>> X)
 {
-        std::map<T,int> degree;
-        int count = 0;
-        int j = 0;
+	std::map<T,int> degree;
+	int count = 0;
+	int j = 0;
+	for (auto i = X.begin(); i != X.end(); i++)
+	{
+		count = 0;
+		for (auto j = i->second.begin(); j != i->second.end(); j++)
+			count++;
+		degree.insert({i->first,count});//degree.insert({i->first,count});
+		j++;
+	}
+	return degree;
+}
+
+template<class T>
+std::map<T,std::vector<T>> Graph<T>::zeroMap()
+{
+        std::map<T,std::vector<T>> degree;//std::map<T, int> degree;
+	std::vector<T> list;
+	bool force_break = false;
+	int j = 0;
         for (auto i = this->vertices.begin(); i != this->vertices.end(); i++)
         {
-                count = 0;
-                for (auto j = i->second.begin(); j != i->second.end(); j++)
-                        count++;
-                degree.insert({j,count});//degree.insert({i->first,count});
+		list.push_back(i->first);
+		degree.insert({j,i->second});
                 j++;
         }
+	for (auto i = degree.begin(); i != degree.end(); i++)//going through the vertices of original graph:: i = vertex
+	{
+		j = 0;
+		for (auto k = i->second.begin(); k != i->second.end(); k++) //going through the vectors of a vertex k = vector of vertex i
+		{
+			//if (*k == list[j]) //first: 1: 2 1 5 6
+			//	*k = j;
+			j = 0;
+			while (*k != list[j])
+			{
+				j++;
+				if (j == list.size())
+				{
+					force_break = true;
+					break;
+				}
+			}
+			if (force_break)
+				std::cout << "Forced to end while" << std::endl;
+			*k = j;
+		}
+	}
+
         return degree;
 }
 
@@ -475,21 +520,8 @@ bool Graph<T>::degreeSeqComp(std::vector<int> a, std::vector<int> b)
 }
 
 template<class T>
-int Graph<T>::factorial(int n)
+bool Graph<T>::permutation(std::map<T,int>a, std::map<T,int>b, std::map<T,std::vector<T>> &X, std::map<T,std::vector<T>> &Y)
 {
-	if (n == 0 || n == 1)
-		return 1;
-	else
-		return n * factorial(n-1);
-}
-
-template<class T>
-bool Graph<T>::permutation(std::map<T,int>a, std::map<T,int>b, Graph<T> &H)
-{
-
-	//TODO:
-	//	Problem: Vertex labels must be equal to compare properly == bad 
-	//	We want the graphs to be not necessarily equal in vertex labels
 	bool perm = false;
 	int count = 0;	//count how many times a permutation is found
 	std::vector<int>found;	//vector to store found permutations in H, so they are not searched again
@@ -506,10 +538,12 @@ bool Graph<T>::permutation(std::map<T,int>a, std::map<T,int>b, Graph<T> &H)
 				//compares if the vertex l deg seq's are the same  and a permutation of j is not already used
 				if((i->first == j->first) && (i->second == j->second) && (it == found.end())) 
 				{
-					std::vector<int> tempG = this->vertices[i->first]; 
-					std::vector<int> tempH = H.vertices[j->first];
+					//setting these vectors equal to the adjacency lists for each newly indexed vertex
+					std::vector<int> tempG = X[i->first];
+					std::vector<int> tempH = Y[j->first];
+					//std::vector<int> tempG = this->vertices[i->first]; 
+					//std::vector<int> tempH = H.vertices[j->first];
 					
-					///////////
 					perm = is_permutation(tempG.begin(), tempG.end(), tempH.begin());
 					if(perm)
 					{
